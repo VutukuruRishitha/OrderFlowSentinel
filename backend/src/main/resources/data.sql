@@ -1,0 +1,6 @@
+-- Seed Sample Data for 6-Digit Orders
+INSERT INTO orders (order_id, customer_name, customer_email, total_amount, currency, status, current_stage, failure_reason, recommended_action, action_explanation, correlation_id, idempotency_key, rectified)
+VALUES 
+('ORD-100245', 'Eleanor Vance', 'eleanor.vance@chateau-luxe.com', 4630.00, 'USD', 'API_FAILURE', 'PAYMENT', 'Payment Gateway returned HTTP 504 Gateway Timeout during the charge request. Inventory hold is active for 15 minutes. Unconfirmed authorization on card token.', 'RETRY', 'Policy POL-PAY-01 recommends Safe Retry with Idempotency Key (idemp_ord_100245) to resume order safely.', 'corr-8f92b490-a1', 'idemp_ord_100245_v1', FALSE),
+('ORD-849102', 'Marcus Aurelius Sterling', 'm.sterling@aurum-holdings.co', 1840.00, 'USD', 'DELAYED', 'FULFILMENT', 'Fulfilment 3PL Service queue congestion (HTTP 429 Rate Limited). Dispatch buffer exceeded SLA threshold by 42 minutes.', 'CHECK_STATUS', 'Policy POL-LOG-03 recommends Ping Fulfilment Queue to check carrier buffer status.', 'corr-7c41d182-b3', 'idemp_ord_849102_v1', FALSE),
+('ORD-392019', 'Victoria Montgomery', 'victoria@montgomery-estate.org', 680.00, 'USD', 'SUCCESS', 'NOTIFICATION', 'No anomaly detected. All 5 pipeline stages verified green.', 'NONE', 'All checks passed within normal operating boundaries.', 'corr-2a19e541-d8', 'idemp_ord_392019_v1', FALSE);

@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: orderflow-sentinel
+  datasource:
+    # Default: Embedded In-Memory Database for zero-friction local and cloud hackathon demos
+    url: jdbc:h2:mem:orderflow_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+# PostgreSQL Profile (Activate with SPRING_PROFILES_ACTIVE=postgres)
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:orderflow_sentinel}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+# MySQL Profile (Activate with SPRING_PROFILES_ACTIVE=mysql)
+---
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:orderflow_sentinel}?useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
+# Sentinel AI & Microservice Simulation Settings
+sentinel:
+  ai:
+    gemini-api-key: ${GEMINI_API_KEY:}
+    model: gemini-1.5-flash
+  policy:
+    max-retry-attempts: 3
+    idempotency-ttl-seconds: 900
+    circuit-breaker-timeout-ms: 4500
